@@ -1,0 +1,7 @@
+[default]
+title=HumaineMailman Preferences
+
+[actions]
+action.success=traverse_to:string:mailman_preferences_action
+action.success..Subscribe=traverse_to:string:mailman_subscriptions_action?action=subscribe
+action.success..Unsubscribe=traverse_to:string:mailman_subscriptions_action?action=unsubscribe

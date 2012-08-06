@@ -1,0 +1,60 @@
+#!/bin/sh
+
+# Project: HumaineMailman
+#  Author: Christian Federmann <cfedermann@dfki.de>
+# 
+# This work has been supported by the EC Project HUMAINE (IST-507422);
+# See http://emotion-research.net/ for more information.
+#
+# We assume that all lists for a specific Mailman $your-list-domain
+# are protected using the same $your-list-password. If you want to
+# connect multiple Mailman instances to a Plone portal you may need
+# to create multiple instances of this sync script.
+#
+# You should always use a test run (-n) before actually using this
+# sync script with real Mailman lists. After successfull completion
+# of the test run, you should uncomment the call to sync_members and
+# (optionally) the clean up action.
+
+list_domain="your-list-domain"
+list_password="your-list-password"
+portal_lists="listname1 listname2 listname3"
+portal_url="http://your-plone-portal-url"
+
+for l in $portal_lists ; do
+
+# Get "new" subscribers list from the Plone portal; this may require to login
+# as an administrator user to your Plone portal using wget auth options.
+# 
+# You can also remove the security.declareProtected(ManagePortal, "xyz")
+# declarations inside HumaineMailmanTool.py for methods "get_list_password"
+# and "get_list_members".
+#
+# Auto lists can be retrieved from $portal_url/mailman_autolist_update,
+# open and role-based lists are found under $portal_url/mailman_list_update.
+wget -O /tmp/${l}.new $portal_url/mailman_autolist_update?list=${l}@${list_domain}\
+&password=$list_password
+
+WGET_RETVAL=$?
+
+if [ $WGET_RETVAL = 0 ] ; then # wget OK
+
+  # test run (-n): what would happen if we called Mailman for real?
+  /usr/sbin/sync_members -n -w=no -g=no -a=no -f /tmp/${l}.new $l
+
+  # uncomment the following two actions after successful testing :)
+  #
+  # call Mailman sync_members to update the list configuration
+  # /usr/sbin/sync_members -w=no -g=no -a=no -f /tmp/${l}.new $l
+  #
+
+else
+
+  echo "Cannot get list of subscribers to list '${l}@${list_domain}' -- leaving untouched."
+
+fi
+
+# Uncomment the following line to clean up temporary files.
+# rm -f /tmp/${l}.new
+
+done

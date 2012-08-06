@@ -1,0 +1,6 @@
+[default]
+title=HumaineMailman Subscriptions
+
+[actions]
+action.failure=traverse_to:string:mailman_preferences?panel=subscriptions
+action.success=traverse_to:string:mailman_preferences?panel=subscriptions

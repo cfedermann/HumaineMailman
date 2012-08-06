@@ -1,0 +1,338 @@
+<tal:block replace="nothing">
+Project: HumaineMailman
+ Author: Christian Federmann, cfedermann@dfki.de
+
+This work has been supported by the EC Project HUMAINE (IST-507422);
+See http://emotion-research.net/ for more information.
+</tal:block>
+
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="humainemailman"
+      metal:use-macro="here/prefs_main_template/macros/master">
+
+
+<metal:block metal:fill-slot="top_slot"
+             tal:define="dummy python:request.set('enable_border',1);" />
+
+<body>
+  <div metal:fill-slot="prefs_configlet_content"
+       tal:define="errors options/state/getErrors;
+                   panel python:request.get('panel', 'global');"
+       tal:condition="python:checkPermission('Manage portal', here)">
+
+  <div id="content" class="documentEditable">
+    <h5 class="hiddenStructure">Views</h5>
+
+    <ul class="contentViews">
+      <li tal:define="selected python:test(panel == 'global', 'selected', 'plain');"
+          tal:attributes="class selected;">
+        <a href="mailman_preferences?panel=global">Global Preferences</a>
+      </li>
+      <li tal:define="selected python:test(panel == 'autolist', 'selected', 'plain');"
+          tal:attributes="class selected;">
+        <a href="mailman_preferences?panel=autolist">Autolist Sandbox</a>
+      </li>
+      <li tal:define="selected python:test(panel == 'subscriptions', 'selected', 'plain');"
+          tal:attributes="class selected;">
+        <a href="mailman_preferences?panel=subscriptions">Manage Subscriptions</a>
+      </li>
+      <li tal:define="selected python:test(panel == 'lookup', 'selected', 'plain');"
+          tal:attributes="class selected;">
+        <a href="mailman_preferences?panel=lookup">Member Lookup</a>
+      </li>
+    </ul>
+
+    <div class="contentActions">
+        &nbsp;
+    </div>
+
+    <div class="documentContent">
+
+    <h1>HumaineMailman Preferences</h1>
+
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_control_panel"
+       i18n:translate="label_up_to_plone_setup">
+    Up to Site Setup
+    </a>
+
+    <!-- LOOKUP_PANEL //-->
+    <form method="post" name="mailman_preferences_form" tal:attributes="action template/id;"
+                                                        tal:condition="python:panel == 'lookup'"
+                                                        tal:define="member_prefix python:request.get('member_prefix', '');
+                                                                    mailinglist_select python:request.get('mailinglist_select', None);">
+
+    <input type="hidden" name="panel" value="lookup" />
+
+    <fieldset>
+      <legend>Search Members</legend>
+
+      <div class="field">
+        <p>
+        This page allows to quickly find portal members and access their mailing list
+        preferences. You can either enter a full member name or just a prefix. Then
+        press the 'Search' button. All members who match your search will be shown below.
+        </p>
+
+        <input type="text" name="member_prefix"
+               tal:attributes="size string:20;maxlength string:50;value python:member_prefix" />
+
+        <input class="context" type="submit" name="form.button.Submit" value="Search" />
+        <input class="context" type="button" name="form.button.Clear" value="Clear"
+               onclick="document.mailman_preferences_form.member_prefix.value='';" />
+      </div>	
+    </fieldset>
+
+    <fieldset tal:define="mailinglists python:here.mailman_tool.get_mailing_lists();"
+              tal:condition="mailinglists">
+      <legend>Search Lists</legend>
+
+      <div class="field">
+        <p>
+        Additionally, you can find portal members based on their mailing list
+        subscriptions. Just select one of the mailing lists below and click
+        the 'Search' button. All members subscribed to this list will then be
+        shown below.
+        </p>
+
+        <select name="mailinglist_select">
+        <span tal:repeat="mailinglist mailinglists">
+          <option tal:attributes="value mailinglist" tal:content="mailinglist" selected="selected"
+                  tal:condition="python:mailinglist == mailinglist_select">mailinglist</option>
+          <option tal:attributes="value mailinglist" tal:content="mailinglist"
+                  tal:condition="python:mailinglist != mailinglist_select">mailinglist</option>
+        </span>
+        </select>
+
+        <input class="context" type="submit" name="form.button.Submit" value="Search" />	
+      </div>	
+    </fieldset>
+
+    <fieldset tal:condition="member_prefix"
+              tal:define="members python:here.mailman_tool.get_members(member_prefix);">
+      <legend>Search Results</legend>
+      <span tal:repeat="member members">
+        <img src="user.png" />
+        <a tal:attributes="href string:mailman_admin_preferences?member_id=${member}"
+           tal:define="member context/@@plone_portal_state/member;"
+           tal:content="member"
+           style="text-decoration: none;">
+        Member
+        </a><br />
+      </span>
+    </fieldset>
+
+    <fieldset tal:condition="python:mailinglist_select and not member_prefix"
+              tal:define="members python:here.mailman_tool.get_list_members(mailinglist_select);">
+      <legend>Search Results</legend>
+      <table tal:condition="members">
+      <tr>
+        <td>
+          <span tal:repeat="member members">
+          <img src="user.png" />
+          <a tal:attributes="href python:'mailman_admin_preferences?member_id='+str(member[0])"
+             tal:content="python:member[0]"
+             style="text-decoration: none;">
+          Member
+          </a><br />
+          </span>
+        </td>
+        <td style="width: 10px;">&nbsp;</td>
+        <td><span tal:repeat="member members"><span tal:replace="python:member[1]">emails go here...</span><br /></span></td>
+      </tr>
+      </table>
+
+      <span tal:condition="not: members">
+      There are no subscriptions for this list at the moment.
+      </span>
+    </fieldset>
+
+    </form>
+
+    <!-- SUBSCRIPTIONS_PANEL //-->
+    <form method="post" name="mailman_preferences_form" tal:attributes="action template/id;"
+                                                        tal:condition="python:panel == 'subscriptions'"
+                                                        tal:define="mailinglist_select python:request.get('mailinglist_select', None);
+                                                                    emails python:request.get('emails', None)">
+
+    <input type="hidden" name="panel" value="subscriptions" />
+
+    <fieldset tal:define="mailinglists python:here.mailman_tool.get_mailing_lists();">
+      <legend>Select Mailing List</legend>
+
+      <span tal:condition="mailinglists">
+      <div class="field">
+        <p>
+        Here you can setup the 'initial' subscriptions for any of your mailing lists.
+        Just enter the email addresses you want to subscribe or unsubscribe below,
+        select the mailing list and click the 'Subscribe' or 'Unsubscribe' button.
+        </p>
+      </div>
+
+      <div class="field">
+        <textarea rows="10" cols="50" tal:attributes="name string:emails:lists" tal:content="emails"></textarea>
+      </div>
+
+      <div class="field">
+        <select name="mailinglist_select">
+        <span tal:repeat="mailinglist mailinglists">
+          <option tal:attributes="value mailinglist" tal:content="mailinglist" selected="selected"
+                  tal:condition="python:mailinglist == mailinglist_select">mailinglist</option>
+          <option tal:attributes="value mailinglist" tal:content="mailinglist"
+                  tal:condition="python:mailinglist != mailinglist_select">mailinglist</option>
+        </span>
+        </select>
+        <input class="context" type="submit" name="form.button.Subscribe" value="Subscribe" />
+        <input class="context" type="submit" name="form.button.Unsubscribe" value="Unsubscribe" />
+      </div>
+
+      <div class="discreet">
+        <p>
+        Mailing list subscriptions are only updated on the Plone side of life. Changes to the
+        actual Mailman lists have to be done separately.
+        </p>
+      </div>
+      </span>
+      <span tal:condition="not: mailinglists">
+        There are no mailing lists for this Plone site at the moment. You can setup some in the
+        <a href="mailman_preferences?panel=global">global preferences</a>.
+      </span>
+    </fieldset>
+
+    <fieldset tal:condition="emails"
+              tal:define="subscriptions_cache python:here.mailman_tool.get_subscriptions_cache();
+                          output python:subscriptions_cache['general'];
+                          output python:output + subscriptions_cache['success'];
+                          output python:output + subscriptions_cache['already'];
+                          output python:output + subscriptions_cache['unknown'];">
+      <legend>Script Output</legend>
+      <pre tal:content="structure output">
+      OUTPUT
+      </pre>
+    </fieldset>
+
+    <input type="hidden" name="form.submitted" value="1" />
+
+    </form>
+
+    <!-- AUTOLIST_PANEL //-->
+    <form method="post" name="mailman_preferences_form" tal:attributes="action template/id;"
+                                                        tal:condition="python:panel == 'autolist'"
+                                                        tal:define="autolist_select python:request.get('autolist_select', None);">
+
+    <input type="hidden" name="panel" value="autolist" />
+
+    <fieldset tal:define="autolists python:here.mailman_tool.get_auto_lists();">
+      <legend>Select Autolist</legend>
+
+      <div class="field" tal:condition="autolists">
+        <p>
+        This is the place to test your autolist settings inside
+        <a href="portal_skins/HumaineMailman/mailman_autolist_update/manage">mailman_autolist_update</a>. This script
+        automatically generates the subscribers' email addresses for a given mailing list.
+        Please select one of your autolists below and press the 'Check' button. The script's
+        output will be shown below.
+        </p>
+
+        <select name="autolist_select">
+        <span tal:repeat="autolist autolists">
+          <option tal:attributes="value autolist" tal:content="autolist" selected="selected"
+                  tal:condition="python:autolist == autolist_select">autolist</option>
+          <option tal:attributes="value autolist" tal:content="autolist"
+                  tal:condition="python:autolist != autolist_select">autolist</option>
+        </span>
+        </select>
+
+        <input class="context" type="submit" name="form.button.Sandbox" value="Check" />	
+      </div>
+      <div class="field" tal:condition="not: autolists">
+        <p>
+        There are no autolists for this Plone site at the moment. You can setup some in the
+        <a href="mailman_preferences?panel=global">global preferences</a>.
+        </p>
+      </div>
+    </fieldset>
+
+    <fieldset tal:condition="autolist_select"
+              tal:define="listpw python:here.mailman_tool.get_list_password(autolist_select);
+                          output python:here.mailman_autolist_update(list=autolist_select, password=listpw);">
+      <legend>Script Output</legend>
+      <pre tal:content="output">
+      OUTPUT
+      </pre>
+    </fieldset>
+
+    </form>
+
+    <!-- GLOBAL_PANEL //-->
+    <form method="post" name="mailman_preferences_form" tal:attributes="action template/id;"
+                                                        tal:condition="python:panel == 'global'">
+
+    <input type="hidden" name="panel" value="global" />
+
+    <fieldset>
+      <legend>Acknowledgements</legend>
+
+      <div class="field">
+        <p class="discreet" style="text-align: center">
+        Copyright &copy; 2007-2012 DFKI GmbH, Saarbr&uuml;cken<br />
+        Developed by Christian Federmann &lt;cfedermann@dfki.de&gt;<br />
+        <br />
+        This work has been supported by the EC Project HUMAINE<br />
+        (IST-507422) -- see <a href="http://emotion-research.net">http://emotion-research.net</a><br />
+        <br />
+        This is version 1.1 "Hordaland" of HumaineMailman.
+        </p>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Mailing Lists</legend>
+
+      <div class="field">
+        <p>
+        This is the place to configure all your mailing lists which should be used with
+        HumaineMailman. Each mailing list entry specifies the <b>type</b> of the mailing list
+        (open, role, or auto), the list's <b>mail address</b>, the corresponding <b>web url
+        without leading 'http://'</b>, it's <b>admin password</b> (which should <b>NOT</b>
+        be the Mailman admin password), and (for role based lists) the <b>required role</b>
+        a user has to have in order to subscribe to the list.<br />
+        <br />
+        The input is expected to be supplied in the following format, fields separated by ":",
+        one entry per line.<br />Role information can be ommitted if an "open" or "auto" list
+        is defined.
+        </p>
+        <p class="portalMessage">
+          &lt;type&gt;:&lt;mail-address&gt;:&lt;web-url&gt;:&lt;admin-password&gt;:&lt;role&gt;
+        </p>
+      </div>
+
+      <div class="field" tal:define="content python:list(here.portal_properties.mailman_properties.getProperty('lists', []));">
+        <textarea rows="10" cols="50" tal:attributes="name string:lists" tal:content="python:'\n'.join(list(content))">
+        </textarea><br />
+      </div>
+
+      <div class="field">
+        <input class="context" type="submit" name="form.button.Submit" value="Update" />
+        <input class="context" type="reset" name="form.button.Reset" value="Reset" />
+      </div>
+
+      <div class="discreet">
+        <p>
+        Mailing list information can be updated by clicking the 'Update' button. To discard
+        any of your changes to the original mailing list information, click the 'Reset' button.
+        </p>
+      </div>
+    </fieldset>
+
+    <input type="hidden" name="form.submitted" value="1" />
+
+    </form>
+    </div>
+  </div>
+  </div>
+</body>
+
+</html>

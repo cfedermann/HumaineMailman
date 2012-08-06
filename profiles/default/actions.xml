@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<object name="portal_actions" meta_type="Plone Actions Tool" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+<object name="user" meta_type="CMF Action Category">
+  <object name="mailman_preferences" meta_type="CMF Action" i18n:domain="plone" insert-before="*">
+    <property name="title" i18n:translate="">Mailing List Preferences</property>
+    <property name="description" i18n:translate=""></property>
+    <property name="url_expr">string:${portal_url}/mailman_member_preferences</property>
+    <property name="icon_expr">string:$portal_url/mail_icon.png</property>
+    <property name="available_expr"></property>
+    <property name="permissions">
+      <element value="Set own properties"/>
+    </property>
+    <property name="visible">True</property>
+  </object>
+</object>
+</object>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<object name="portal_skins">
+  <object name="HumaineMailman" meta_type="Filesystem Directory View" directory="Products.HumaineMailman:skins/HumaineMailman"/>
+  <skin-path name="*">
+    <layer name="HumaineMailman" insert-after="custom"/>
+  </skin-path>
+</object>

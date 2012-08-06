@@ -1,0 +1,7 @@
+[default]
+title=HumaineMailman Admin Preferences
+proxy=Manager,Anonymous
+
+[actions]
+action.failure=traverse_to:string:mailman_admin_preferences
+action.success=redirect_to:string:mailman_admin_preferences

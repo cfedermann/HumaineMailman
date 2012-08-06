@@ -1,0 +1,86 @@
+<tal:block replace="nothing">
+Project: HumaineMailman
+ Author: Christian Federmann, cfedermann@dfki.de
+
+This work has been supported by the EC Project HUMAINE (IST-507422);
+See http://emotion-research.net/ for more information.
+</tal:block>
+
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="humainemailman"
+      metal:use-macro="here/prefs_main_template/macros/master">
+
+<metal:block metal:fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1);" />
+
+<body>
+  <div metal:fill-slot="prefs_configlet_main"
+       tal:define="errors options/state/getErrors;
+                   member context/@@plone_portal_state/member;"
+       tal:condition="member">
+
+    <h1>Mailing List Preferences</h1>
+
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_memberprefs_panel"
+       i18n:translate="label_up_to_memberprefs_panel">
+    Up to Member Preferences
+    </a>
+
+    <form method="post" name="mailman_member_preferences_form"
+          tal:attributes="action template/id;"
+          tal:define="member here/portal_membership/getAuthenticatedMember;">
+
+    <fieldset>
+      <legend>Subscriptions</legend>
+
+      <div class="field">
+        <p>
+        This is the place to configure all your mailing list subscriptions on this portal.
+        Below you will find a list of all the mailing lists you can subscribe to and those 
+        you are currently registered for.<br />
+        </p>
+        <p class="portalMessage">
+        Check the box next to a mailing list's name to subscribe, uncheck to unsubscribe.
+        Yes, it this that simple :)
+      </div>
+
+      <div class="field" tal:define="member_lists python:here.mailman_tool.get_member_lists(member);">
+        <span tal:repeat="member_list member_lists">
+          <span tal:define="index repeat/member_list/index">
+            <input type="hidden" tal:attributes="name string:address_${index};value python:member_list[0]" />
+            <input type="checkbox" tal:attributes="name string:checkbox_${repeat/member_list/index};checked python:request.get('checkbox_{0}'.format(index), member_list[1])" />
+          </span>
+          <span tal:replace="python:member_list[0]" />
+          <a style="text-decoration:none" tal:attributes="href python:'http://' + member_list[2]"><img src="topic_icon.png" /> Info Page</a><br />
+        </span>
+        <input type="hidden" name="checkboxes" tal:attributes="value python:len(member_lists)" />
+      </div>
+
+      <div class="field">
+        <input class="context" type="submit" name="form.button.Submit" value="Update" />
+        <input class="context" type="reset" name="form.button.Reset" value="Reset" />
+        <input class="context" type="button" name="form.button.Checkall" value="Select All"
+               tal:attributes="onclick string:javascript:check_all();" />
+        <input class="context" type="button" name="form.button.Uncheckall" value="Select None"
+               tal:attributes="onclick string:javascript:uncheck_all();" />
+        <input class="context" type="button" name="form.button.Invertall" value="Invert Selection"
+               tal:attributes="onclick string:javascript:invert_all();" />
+      </div>
+      <div class="discreet">
+        <p>
+        Mailing list information can be updated by clicking the 'Update' button. To discard
+        any of your changes to the original mailing list information, click the 'Reset' button.
+        </p>
+      </div>
+    </fieldset>
+
+    <input type="hidden" name="form.submitted" value="1" />
+
+    </form>
+  </div>
+</body>
+
+</html>

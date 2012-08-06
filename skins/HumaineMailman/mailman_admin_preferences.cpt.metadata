@@ -1,0 +1,5 @@
+[default]
+title=HumaineMailman Admin Preferences
+
+[actions]
+action.success=traverse_to:string:mailman_admin_preferences_action

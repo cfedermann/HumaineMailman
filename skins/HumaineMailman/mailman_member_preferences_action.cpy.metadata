@@ -1,0 +1,6 @@
+[default]
+title=HumaineMailman Member Preferences
+
+[actions]
+action.failure=traverse_to:string:mailman_member_preferences
+action.success=redirect_to:string:mailman_member_preferences
