@@ -36,11 +36,11 @@ try:
     )
 
 except:
-    _msg = context.plone_utils.exceptionString()
     state.set(status="failure")
     state.set(
       portal_status_message="An error occured when updating mailing list " \
-        "subscriptions.  Exception: '{0}'".format(_msg)
+        "subscriptions.  Exception: '{0}'".format(
+        context.plone_utils.exceptionString())
     )
 
 return state
