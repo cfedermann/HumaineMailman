@@ -207,7 +207,8 @@ See http://emotion-research.net/ for more information.
                           output python:output + subscriptions_cache['already'];
                           output python:output + subscriptions_cache['unknown'];">
       <legend>Script Output</legend>
-      <pre tal:content="structure output">
+      <pre tal:condition="output"
+           tal:content="output">
       OUTPUT
       </pre>
     </fieldset>
@@ -258,7 +259,8 @@ See http://emotion-research.net/ for more information.
               tal:define="listpw python:here.mailman_tool.get_list_password(autolist_select);
                           output python:here.mailman_autolist_update(list=autolist_select, password=listpw);">
       <legend>Script Output</legend>
-      <pre tal:content="output">
+      <pre tal:condition="output"
+           tal:content="output">
       OUTPUT
       </pre>
     </fieldset>
