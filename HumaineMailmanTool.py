@@ -287,6 +287,9 @@ class HumaineMailmanTool(UniqueObject, SimpleItem):
         
         return result
     
+    # Use security.declarePublic("get_member_lists") to allow anonymous users
+    # to call this method without the need to login.  This allows to use wget
+    # synchronisation with mailman_{autolist|list}_update.py.
     security.declareProtected(View, "get_member_lists")
     def get_member_lists(self, member):
         """
@@ -333,6 +336,9 @@ class HumaineMailmanTool(UniqueObject, SimpleItem):
         
         return result
     
+    # Use security.declarePublic("get_list_password") to allow anonymous users
+    # to call this method without the need to login.  This allows to use wget
+    # synchronisation with mailman_{autolist|list}_update.py.
     security.declareProtected(ManagePortal, "get_list_password")
     def get_list_password(self, address):
         """
