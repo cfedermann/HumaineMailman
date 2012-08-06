@@ -116,7 +116,6 @@ See http://emotion-research.net/ for more information.
       <span tal:repeat="member members">
         <img src="user.png" />
         <a tal:attributes="href string:mailman_admin_preferences?member_id=${member}"
-           tal:define="member context/@@plone_portal_state/member;"
            tal:content="member"
            style="text-decoration: none;">
         Member
