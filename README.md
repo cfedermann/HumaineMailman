@@ -3,7 +3,7 @@ HumaineMailman
 
 Plone 4 compatible release of the HumaineMailman product.
 
-## 1. Description
+## 1. Overview
 
 This product allows Plone portal users to `subscribe` or `unsubscribe` to Mailman mailing lists and, thus, to embed Mailman mailing lists into a Plone portal.
 
@@ -26,7 +26,7 @@ This product can be installed using the Plone `portal_quickinstaller` tool in th
 3. a portal action named `mailman_member_preferences`;
 4. a custom Javascript file named `mailman_preferences.js`;
 5. a member property named `mailing_lists`;
-6. a property sheet named `mailman_properties`;
+6. a property sheet named `mailman_properties`.
 
 __IMPORTANT:__ before you can actually use HumaineMailman, you will have to prepare one or several Mailman mailing lists. Please also read the documentation inside `docs` before using HumaineMailman.
 
@@ -36,7 +36,7 @@ To remove the product from your Plone instance, just select "Uninstall" in the `
 
 1. the tool `mailman_tool`;
 2. the portal action `mailman_member_preferences`;
-3. the custom Javascript file `mailman_preferences.js`;
+3. the custom Javascript file `mailman_preferences.js`.
 
 Member properties inside `mailing_lists` and anything inside `mailman_properties` will __NOT__ be deleted so your mailing list settings will remain available. Sadly, Plone's GenericSetup mechanism will __OVERWRITE__ any pre-existing settings on re-install, so it is a good idea to make a backup of your list settings regularly!
 
