@@ -5,6 +5,8 @@ Project: HumaineMailman
 This work has been supported by the EC Project HUMAINE (IST-507422);
 See http://emotion-research.net/ for more information.
 """
+from xml.dom.minidom import getDOMImplementation
+
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
 from Products.CMFCore.permissions import View, ManagePortal
@@ -58,6 +60,39 @@ class HumaineMailmanTool(UniqueObject, SimpleItem):
         
         else:
             self._cache["unknown"] = ""
+    
+    security.declareProtected(ManagePortal, "export_content")
+    def export_content(self):
+        """
+        Exports mailing lists and member subscriptions to XML.
+        """
+        DOM = getDOMImplementation()
+        doc = DOM.createDocument(None, "object", None)
+        
+        mailing_lists = doc.createElement("mailing_lists")
+        member_mailing_lists = doc.createElement("member_mailing_lists")
+        
+        properties = getToolByName(self, "portal_properties")
+        lists = list(properties.mailman_properties.getProperty("lists", []))
+        for _list in lists:
+            item = doc.createElement("element")
+            item.setAttribute('value', _list)
+            mailing_lists.appendChild(item)
+        doc.firstChild.appendChild(mailing_lists)
+        
+        membership = getToolByName(self, "portal_membership")
+        members = membership.listMembers()
+        for member in members:
+            member_lists = list(member.getProperty("mailman_lists", []))
+            member_node = doc.createElement(member.getId())
+            for member_list in member_lists:
+                item = doc.createElement("element")
+                item.setAttribute('value', member_list)
+                member_node.appendChild(item)
+            member_mailing_lists.appendChild(member_node)
+            
+        doc.firstChild.appendChild(member_mailing_lists)
+        return doc.toprettyxml()
     
     security.declareProtected(ManagePortal, "get_subscriptions_cache")
     def get_subscriptions_cache(self):
