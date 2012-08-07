@@ -38,7 +38,7 @@ To remove the product from your Plone instance, just select "Uninstall" in the `
 2. the portal action `mailman_member_preferences`;
 3. the custom Javascript file `mailman_preferences.js`.
 
-Member properties inside `mailing_lists` and anything inside `mailman_properties` will __NOT__ be deleted so your mailing list settings will remain available. Sadly, Plone's GenericSetup mechanism will __OVERWRITE__ any pre-existing settings on re-install, so it is a good idea to make a backup of your list settings regularly!
+Member properties inside `mailing_lists` and anything inside `mailman_properties` will __NOT__ be deleted so your mailing list settings will remain available.
 
 __NOTE:__ for some reason, the QuickInstaller will not remove the `HumaineMailmanPreferences` entry inside `portal_controlpanel`. You have to delete it manually when uninstalling this product.
 
