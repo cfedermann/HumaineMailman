@@ -5,11 +5,11 @@
   <include file="profiles.zcml"/>
 
   <adapter
-      factory=".exportimport.HumaineMailmanToolXMLAdapter"
-      provides="Products.GenericSetup.interfaces.IBody"
-      for=".HumaineMailmanTool.HumaineMailmanTool
-           Products.GenericSetup.interfaces.ISetupEnviron"
-      />
+    factory=".exportimport.HumaineMailmanToolXMLAdapter"
+    provides="Products.GenericSetup.interfaces.IBody"
+    for=".HumaineMailmanTool.HumaineMailmanTool
+         Products.GenericSetup.interfaces.ISetupEnviron"
+    />
 
   <cmf:registerDirectory
     name="skins"
