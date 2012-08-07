@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<import-steps>
+  <import-step id="mailman_tool" version="20120807" handler="Products.HumaineMailman.exportimport.importHumaineMailmanTool" title="HumaineMailman Tool">
+    <dependency step="toolset"/>
+    Import HumaineMailman lists and subscriptions.
+  </import-step>
+</import-steps>

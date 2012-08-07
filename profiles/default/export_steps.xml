@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<export-steps>
+  <export-step id="mailman_tool" handler="Products.HumaineMailman.exportimport.exportHumaineMailmanTool" title="HumaineMailman Tool">
+    Export HumaineMailman lists and subscriptions.
+  </export-step>
+</export-steps>
