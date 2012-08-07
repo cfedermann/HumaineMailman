@@ -2,6 +2,6 @@
 <object name="portal_properties" meta_type="Plone Properties Tool">
  <object name="mailman_properties" meta_type="Plone Property Sheet">
    <property name="title" type="string">Mailman Properties</property>
-   <property name="lists" type="lines"></property>
+   <property name="lists" type="lines" purge="False"></property>
  </object>
 </object>
