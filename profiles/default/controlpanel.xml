@@ -8,7 +8,7 @@
     condition_expr="python:getattr(portal, 'mailman_tool', False)"
     url_expr="string:${portal_url}/mailman_preferences"
     icon_expr="string:humaine_h.png"
-    visible="True"
+    visible="True">
     <permission>Manage portal</permission>
   </configlet>
 </object>
