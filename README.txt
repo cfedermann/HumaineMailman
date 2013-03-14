@@ -48,7 +48,7 @@ Member properties inside ``mailing_lists`` and anything inside ``mailman_propert
 3. Credits
 ----------
 
-Developed by `Christian Federmann <http://www.dfki.de/~cfedermann/>`_, note that this software is not actively maintained due to lack of funding.
+Developed by `Christian Federmann <http://www.cfedermann.de/>`_, note that this software is not actively maintained due to lack of funding.
 
 This work has been supported by the `EC Project HUMAINE (IST-507422) <http://emotion-research.net/>`_.
 

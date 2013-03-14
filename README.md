@@ -44,7 +44,7 @@ __NOTE:__ for some reason, the QuickInstaller will not remove the `HumaineMailma
 
 ## 3. Credits
 
-Developed by [Christian Federmann](http://www.dfki.de/~cfedermann/), note that this software is not actively maintained due to lack of funding.
+Developed by [Christian Federmann](http://www.cfedermann.de/), note that this software is not actively maintained due to lack of funding.
 
 This work has been supported by the [EC Project HUMAINE (IST-507422)](http://emotion-research.net/).
 
