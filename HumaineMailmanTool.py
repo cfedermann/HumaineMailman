@@ -1,3 +1,4 @@
+# pylint: disable-msg=F0401
 """
 Project: HumaineMailman
  Author: Christian Federmann <cfedermann@dfki.de>
@@ -20,6 +21,8 @@ except ImportError:
 
 from Products.HumaineMailman.config import PKG_NAME, UNIQUE_ID, ICON
 
+
+# pylint: disable-msg=C0103,E1101
 class HumaineMailmanTool(UniqueObject, SimpleItem):
     """
     Plone tool that allows to connect Mailman mailing lists to Plone.
