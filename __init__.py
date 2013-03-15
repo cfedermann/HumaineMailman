@@ -1,3 +1,4 @@
+# pylint: disable-msg=C0103,F0401
 """
 Project: HumaineMailman
  Author: Christian Federmann <cfedermann@dfki.de>
