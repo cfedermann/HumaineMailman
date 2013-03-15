@@ -1,3 +1,4 @@
+# pylint: disable-msg=F0401
 """
 Project: HumaineMailman
  Author: Christian Federmann <cfedermann@dfki.de>
@@ -13,11 +14,13 @@ from Products.GenericSetup.utils import XMLAdapterBase
 from Products.HumaineMailman.HumaineMailmanTool import HumaineMailmanTool
 
 
+# pylint: disable-msg=E1101
 class HumaineMailmanToolXMLAdapter(XMLAdapterBase):
     """
     Implements export/import behaviour for the HumaineMailmanTool.
     """
     __used_for__ = HumaineMailmanTool
+    _encoding = None
     
     _LOGGER_ID = 'mailman_tool'
     
