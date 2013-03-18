@@ -1,6 +1,6 @@
 <tal:block replace="nothing">
 Project: HumaineMailman
- Author: Christian Federmann, cfedermann@dfki.de
+ Author: Christian Federmann, cfedermann@gmail.com
 
 This work has been supported by the EC Project HUMAINE (IST-507422);
 See http://emotion-research.net/ for more information.
@@ -279,7 +279,7 @@ See http://emotion-research.net/ for more information.
       <div class="field">
         <p class="discreet" style="text-align: center">
         Copyright &copy; 2007-2012 DFKI GmbH, Saarbr&uuml;cken<br />
-        Developed by Christian Federmann &lt;cfedermann@dfki.de&gt;<br />
+        Developed by Christian Federmann &lt;cfedermann@gmail.com&gt;<br />
         <br />
         This work has been supported by the EC Project HUMAINE<br />
         (IST-507422) -- see <a href="http://emotion-research.net">http://emotion-research.net</a><br />

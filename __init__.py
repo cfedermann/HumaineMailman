@@ -1,7 +1,7 @@
 # pylint: disable-msg=C0103,F0401
 """
 Project: HumaineMailman
- Author: Christian Federmann <cfedermann@dfki.de>
+ Author: Christian Federmann <cfedermann@gmail.com>
 
 This work has been supported by the EC Project HUMAINE (IST-507422);
 See http://emotion-research.net/ for more information.
